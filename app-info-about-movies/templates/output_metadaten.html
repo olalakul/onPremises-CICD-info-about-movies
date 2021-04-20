@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head/>
+    <style>
+        table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    test-align: left;
+                    padding: 15px
+                  }
+    </style>
+    </head>
+    <body>
+        <H2>Metadaten gefunden in International Movie DataBase (imdb.com) </H2>
+        
+        <div style="float:right; display:inline; width: 20%">
+        <img src="{{poster_url}}" alt="Poster "+poster_url width='100%'>
+        </div>
+        
+        <div style="float:left; width:75%">
+        <table border=0>
+            {% for key, value in result.items() %}
+            
+            <tr>
+                <th> {{ key }} </th>
+                <td> {{ value }} </td>
+            </tr>
+            
+            {% endfor %}
+        </table>
+        </div>
+        
+        <div style="clear:both"/>
+        
+    </body>
+</html>
