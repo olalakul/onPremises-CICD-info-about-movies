@@ -10,7 +10,7 @@ pipeline {
             }
         }
         stage('Build and check Docker Image') {
-            agent {dockerfile true}
+            agent any
             when {branch 'staging'}
             steps {
                 sh  ''' echo "Building docker image"
