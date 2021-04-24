@@ -1,13 +1,17 @@
 // pipeline
 pipeline {
-    agent any
+    agent none
     stages {
         stage('Linting python code') {
+            agent any
+            when {branch 'development'}
             steps {
                 sh 'pyflakes ./app-info-about-movies/'
             }
         }
-        stage('Build Docker Image') {
+        stage('Build and check Docker Image') {
+            agent {dockerfile true}
+            when {branch 'staging'}
             steps {
                 sh  ''' echo "Building docker image"
                         pwd
@@ -22,6 +26,8 @@ pipeline {
              }
         }
         stage('Check Docker Contrainer locally') {
+            agent any
+            when {branch 'staging'}
             steps {
                 sh  ''' echo "Stop and remove container if exists"
                         docker stop app-info-about-movies || true && docker rm app-info-about-movies || true
@@ -33,18 +39,31 @@ pipeline {
                         curl http://localhost:5000
                         echo "Stop and remove container"
                         docker container stop app-info-about-movies && docker container rm app-info-about-movies
+                        echo "Pruning docker"
+                        docker system prune -f
                     '''
              }
         }
-        stage('Deploy locally from Docker Container') {
-            steps{
-                sh  ''' echo "Run container"
-                        docker container run -d -p 5000:5000 --name "app-info-about-movies" app-info-about-movies
-                    '''
+        stage('Push Docker image') {
+            agent any
+            when {branch 'staging'}
+            steps {
+                sh 'echo "Pushihg docker image"'
+                withDockerRegistry([url: "", credentialsId: "dockerhub_id"]) {
+                    sh "docker tag app-info-about-movies olalakul/app-info-about-movies"
+                    sh 'docker push olalakul/app-info-about-movies'
+                }
             }
         }
-        stage('Clean up') {
+        stage('Deploy locally from Docker Container') {
+            agent any
+            when {branch 'production'}
             steps{
+                sh  ''' echo "Run container"
+                        docker container run -d -p 5000:5000 --name "app-info-about-movies" olalakul/app-info-about-movies
+                    '''
+                input message: 'Finished using the web site? (Click "Proceed button in BlueOcean" to continue)'
+                sh 'docker container stop app-info-about-movies && docker container rm app-info-about-movies'
                 sh 'echo "Pruning docker"  && docker system prune -f'
             }
         }
