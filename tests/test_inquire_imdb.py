@@ -1,5 +1,5 @@
 import importlib
-iimdb = importlib.import_module("app-info-about-movies.inquire_imdb")
+iimdb = importlib.import_module("app-info-about-movies.inquire_imdb", ".")
 
 def test_match_distributors_production():
     production_companies = ['Mandeville Films', 'Walt Disney Pictures (presents) (as Disney)']
