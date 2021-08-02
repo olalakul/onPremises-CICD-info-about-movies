@@ -1,23 +1,28 @@
 // pipeline
 pipeline {
     agent none
+    environment {
+        DOCKER_CONTAINER_NAME = 'app-info-about-movies' 
+    }
     stages {
         stage('Linting python code') {
             agent any
             when {branch 'development'}
             steps {
-                sh 'pyflakes ./app-info-about-movies/'
+                sh "pyflakes3 ./app-info-about-movies/"
             }
         }
         stage('Build and check Docker Image') {
             agent any
             when {branch 'staging'}
             steps {
-                sh  ''' echo "Building docker image"
-                        pwd
-                        docker image build -t "app-info-about-movies" .
-                        sleep 5 && docker image list
-                    '''
+                echo "Building docker image ${DOCKER_CONTAINER_NAME}"
+                sh """ 
+                    pwd
+                    docker image build -t "${DOCKER_CONTAINER_NAME}" .
+                    sleep 5 && docker image list
+                """ 
+                    
                 sh  ''' echo "Checking vulnerabilities with trivy"
                         trivy --clear-cache image --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 app-info-about-movies
                         trivy --clear-cache image --ignore-unfixed --severity MEDIUM,LOW --exit-code 0 app-info-about-movies
