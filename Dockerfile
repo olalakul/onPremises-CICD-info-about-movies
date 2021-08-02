@@ -6,7 +6,8 @@ LABEL Olga Lalakulich "olalakul@gmail.com"
 
 # install curl
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN apt-get  update && apt-get install --no-install-recommends -y curl &&  apt-get clean && rm -rf /var/lib/apt/lists/*
+# --no-install-recommends
+RUN apt-get  update && apt-get install  -y curl &&  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # embed Trivy for Security scan
 # MicroScanner is now deprecated in favour of Trivy - as it written at the https://github.com/aquasecurity/microscanner

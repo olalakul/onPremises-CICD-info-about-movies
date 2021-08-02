@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Push Docker image') {
             agent any
-            when {branch 'staging'}
+            when {branch 'production'}
             steps {
                 sh 'echo "Pushihg docker image"'
                 withDockerRegistry([url: "", credentialsId: "dockerhub_id"]) {
