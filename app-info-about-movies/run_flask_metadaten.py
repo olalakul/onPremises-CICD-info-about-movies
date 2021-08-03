@@ -86,8 +86,12 @@ def output_metadaten():
             result['year_found']=year_found;
             r_countries, soup_countries = iimdb.get_r_countries(sess, imdbID)
             
-            poster_url = soup_countries.find('img', alt=re.compile('Poster')).get('src')
+            try:
+                poster_url = soup_countries.find('img', attrs={'class': 'ipc-image'}).get('src')
+            except AttributeError:
+                poster_url = ''
             
+
             genres = iimdb.get_genres(soup_countries, verbose=1);
             result['genres']=", ".join(genres);
             countries = iimdb.get_countries(soup_countries, verbose=1);
