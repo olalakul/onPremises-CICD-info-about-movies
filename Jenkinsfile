@@ -10,7 +10,7 @@ pipeline {
             agent any
             when {branch 'development'}
             steps {
-                sh "pyflakes3 ./app-info-about-movies/"
+                sh "pyflakes ./app-info-about-movies/"
             }
         }
         stage('Build and check Docker Image') {
