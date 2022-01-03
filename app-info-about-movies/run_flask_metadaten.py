@@ -4,7 +4,6 @@
 from collections import OrderedDict
 from datetime import datetime
 from flask import Flask, render_template, request #, jsonify
-import re
 import requests
 
 import inquire_imdb as iimdb
