@@ -35,9 +35,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        echo "Installig pytest"
         pip install  pytest 
         if [ -f ./app-info-about-movies/requirements.txt ]; 
-           then pip install -r ./app-info-about-movies/requirements.txt; 
+           then 
+              echo "pwd und ls";
+              pwd;
+              ls;
+              echo "Installing requirements";
+              pip install -r ./app-info-about-movies/requirements.txt; 
         fi
     ## Run all pytests by inovking the `pytest command`
     - name: Test with pytest
