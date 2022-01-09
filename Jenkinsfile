@@ -2,7 +2,7 @@
 pipeline {
     agent none
     environment {
-        DOCKER_IMAGE_NAME = 'app-info-about-movies' 
+        DOCKER_IMAGE_NAME = 'app_info_about_movies' 
         DOCKER_CONTAINER_NAME = 'info-about-movies' 
     }
     stages {
@@ -10,7 +10,7 @@ pipeline {
             agent any
             when {branch 'development'}
             steps {
-                sh "pyflakes ./app-info-about-movies/"
+                sh "pyflakes ./app_info_about_movies/"
             }
         }
         stage('Build and check Docker Image') {
@@ -61,8 +61,8 @@ pipeline {
             steps {
                 sh 'echo "Pushihg docker image"'
                 withDockerRegistry([url: "", credentialsId: "dockerhub_id"]) {
-                    sh "docker tag app-info-about-movies olalakul/app-info-about-movies"
-                    sh 'docker push olalakul/app-info-about-movies'
+                    sh "docker tag app_info_about_movies olalakul/app_info_about_movies"
+                    sh 'docker push olalakul/app_info_about_movies'
                 }
             }
         }
@@ -71,10 +71,10 @@ pipeline {
             when {branch 'production'}
             steps{
                 sh  ''' echo "Run container"
-                        docker container run -d -p 5000:5000 --name "app-info-about-movies" olalakul/app-info-about-movies
+                        docker container run -d -p 5000:5000 --name "app_info_about_movies" olalakul/app_info_about_movies
                     '''
                 input message: 'Finished using the web site? (Click "Proceed button in BlueOcean" to continue)'
-                sh 'docker container stop app-info-about-movies && docker container rm app-info-about-movies'
+                sh 'docker container stop app_info_about_movies && docker container rm app_info_about_movies'
                 sh 'echo "Pruning docker"  && docker system prune -f'
             }
         }

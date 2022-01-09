@@ -18,7 +18,7 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contri
 WORKDIR /get-movie-info
 
 # copy the files to the working directory
-COPY app-info-about-movies/ .
+COPY app_info_about_movies/ .
 
 # install dependencies
 RUN pip install -r requirements.txt
