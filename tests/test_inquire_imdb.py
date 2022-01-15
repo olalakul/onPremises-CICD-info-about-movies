@@ -1,7 +1,5 @@
-#import importlib
-#iimdb = importlib.import_module("app_info_about_movies.inquire_imdb")
+import pytest
 
-#from ..app_info_about_movies import inquire_imdb as iimdb
 import app_info_about_movies.inquire_imdb as iimdb
 
 

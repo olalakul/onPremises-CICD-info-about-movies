@@ -6,11 +6,19 @@ pipeline {
         DOCKER_CONTAINER_NAME = 'info-about-movies' 
     }
     stages {
-        stage('Linting python code') {
+        stage('Linting and testing python code') {
             agent any
             when {branch 'development'}
             steps {
-                sh "pyflakes ./app_info_about_movies/"
+                sh """
+                    pyflakes *.py  ./app_info_about_movies/
+                    echo "Current directory"
+                    pwd
+                    echo "List of files"
+                    ls
+                    echo "Performing pytest"
+                    pytest
+                """ 
             }
         }
         stage('Build and check Docker Image') {

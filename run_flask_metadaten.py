@@ -6,7 +6,7 @@ from datetime import datetime
 from flask import Flask, render_template, request #, jsonify
 import requests
 
-import inquire_imdb as iimdb
+import app_info_about_movies.inquire_imdb as iimdb
 
 proxies = None
 
