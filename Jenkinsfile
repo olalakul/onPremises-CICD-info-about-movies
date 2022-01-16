@@ -11,13 +11,15 @@ pipeline {
             when {branch 'development'}
             steps {
                 sh """
+                    echo "Scan Filesystem for Vulnerabilities and Misconfigurations"
+                    trivy fs --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 --security-checks vuln,config .
                     pyflakes *.py  ./app_info_about_movies/
                     echo "Current directory"
                     pwd
                     echo "List of files"
                     ls
                     echo "Performing pytest"
-                    pytest
+                    pytest                     
                 """ 
             }
         }

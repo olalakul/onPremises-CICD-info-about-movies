@@ -14,6 +14,10 @@ RUN apt-get  update && apt-get install  -y curl &&  apt-get clean && rm -rf /var
 RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin \
     && trivy filesystem --ignore-unfixed --exit-code 1 --severity HIGH,CRITICAL --no-progress /
 
+RUN groupadd -r user && useradd -r -g user user
+
+USER user
+
 # working directory in the container
 WORKDIR /get-movie-info
 
