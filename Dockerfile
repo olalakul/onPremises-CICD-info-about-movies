@@ -18,7 +18,7 @@ RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contri
 WORKDIR /get-movie-info
 
 # copy the files to the working directory
-COPY app_info_about_movies/ .
+COPY run_flask_metadaten.py app_info_about_movies/ /get-movie-info/
 
 # install dependencies
 RUN python3 -m pip install -r requirements.txt

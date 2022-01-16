@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Build and check Docker Image') {
             agent any
-            when {branch 'staging'}
+            when { anyOf {branch 'development'; branch 'staging'} }
             steps {
                 echo "Building docker image ${DOCKER_IMAGE_NAME}"
                 sh """ 
