@@ -48,7 +48,8 @@ pipeline {
                 """ 
                     
                 echo "Checking vulnerabilities with trivy"
-                sh """  trivy --clear-cache image --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 ${DOCKER_IMAGE_NAME}
+                sh """  
+                        trivy --clear-cache image --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 ${DOCKER_IMAGE_NAME}
                         trivy --clear-cache image --ignore-unfixed --severity MEDIUM,LOW --exit-code 0 ${DOCKER_IMAGE_NAME}
                         sleep 5
                    """ 
@@ -62,13 +63,13 @@ pipeline {
                 sh "docker stop ${DOCKER_CONTAINER_NAME} || true && docker rm ${DOCKER_CONTAINER_NAME} || true"
                 
                 echo "Run container"
-                sh "docker container run -d -p 5000:5000 --name ${DOCKER_CONTAINER_NAME}  ${DOCKER_IMAGE_NAME}"
+                sh "docker container run -d -p 5001:5000 --name ${DOCKER_CONTAINER_NAME}  ${DOCKER_IMAGE_NAME}"
                 
                 echo "List running containers"
-                sh "sleep 5 && docker container list"
-                
+                sh "sleep 7 && docker container list"
+
                 echo "Try running app"
-                sh "curl http://localhost:5000"
+                sh "curl -f  http://localhost:5001 && sleep 5"
                 
                 echo "Stop and remove container"
                 sh "docker container stop ${DOCKER_CONTAINER_NAME} && docker container rm ${DOCKER_CONTAINER_NAME}"
@@ -96,7 +97,7 @@ pipeline {
                 sh  ''' echo "Run container"
                         docker container run -d -p 5000:5000 --name "app_info_about_movies" olalakul/app_info_about_movies
                     '''
-                input message: 'Finished using the web site? (Click "Proceed button in BlueOcean" to continue)'
+                input message: 'Finished using the web site? (Click "Proceed" button in BlueOcean to continue)'
                 sh 'docker container stop app_info_about_movies && docker container rm app_info_about_movies'
                 sh 'echo "Pruning docker"  && docker system prune -f'
             }
