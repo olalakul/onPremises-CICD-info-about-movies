@@ -11,16 +11,29 @@ pipeline {
             when {branch 'development'}
             steps {
                 sh """
-                    echo "Scan Filesystem for Vulnerabilities and Misconfigurations"
-                    trivy fs --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 --security-checks vuln,config .
-                    pyflakes *.py  ./app_info_about_movies/
                     echo "Current directory"
                     pwd
                     echo "List of files"
                     ls
-                    echo "Performing pytest"
-                    pytest                     
+                    echo "Scan Filesystem for Vulnerabilities and Misconfigurations"
+                    trivy fs --ignore-unfixed --severity CRITICAL,HIGH --exit-code 1 --security-checks vuln,config .
                 """ 
+            }
+            {
+                sh """ 
+                    echo "Linting code with pyflakes"
+                    pyflakes *.py  ./app_info_about_movies/
+                """ 
+            }
+            {
+                sh """ 
+                    echo "Performing pytest"
+                    pytest
+                """                         
+            }
+            {
+                sh 'python3 ./run_flask_metadaten.py &'
+                sh 'sleep 5 && curl -f localhost:5000'
             }
         }
         stage('Build and check Docker Image') {

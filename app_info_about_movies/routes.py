@@ -11,7 +11,7 @@ proxies = None
 
 @app.route('/')
 def input_for_metadaten():
-    return render_template('input_for_metadaten.html', hostname='https://metadatentv.netrtl.com')  #hostname='https://kochbar-id.netrtl.com'
+    return render_template('input_for_metadaten.html')
 
 # ----- does not work
 #class InputForMetadaten(Resource):

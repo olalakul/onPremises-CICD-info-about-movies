@@ -1,5 +1,5 @@
 import pytest
-from app_info_about_movies import app, routes
+from app_info_about_movies import app#, routes
 
 @pytest.fixture
 def client():
