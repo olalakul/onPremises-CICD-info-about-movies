@@ -1,5 +1,5 @@
 # Info about Movies
-This is a demo code and a testing example for my learning  of RESTful, flask, jenkins, docker ... so far.
+This is a demo code and a playground for my learning  of RESTful, flask, jenkins, docker ... so far.
 
 It searches some specific information about the movie in the IMDB, makes some processing and presents results in the table.
 
@@ -15,3 +15,18 @@ Later I learned some DevOps and used this real-life project for testing.
 I am planning to use it for future learning and testing. New technologies are welcome.
 
 
+## How?
+The code is mainly python flask.
+
+Linting with pyflakes, scanning for vulnerabilities with aquasecurity trivy.
+
+CI/CD with Jenkins and Docker (during on-premises development)
+
+CI/CD with Github Actions
+
+## What?
+To see the app working, execute in the command line
+
+    python3 run_flask_metadaten.py
+
+open your webbrowser and go to localhost:5000
